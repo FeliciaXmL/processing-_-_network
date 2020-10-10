@@ -1,0 +1,960 @@
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exslt="http://exslt.org/common"
+  extension-element-prefixes="exslt">
+  <xsl:output method="html" encoding="UTF-8" indent="yes"/>
+  <!--  -->
+  <!--  -->
+  <!-- PROCESS ROOT NODE -->
+  <xsl:template match="/">
+    <xsl:apply-templates/>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!-- print error text -->
+  <xsl:template name="error">
+    <xsl:param name="message" select="''"/>
+    <p class="error">
+      <xsl:value-of select="$message"/>
+    </p>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!-- what section to show -->
+  <xsl:param name="section" select="''"/>
+  <!--  -->
+  <!-- what mode (frameset, header, content) -->
+  <xsl:param name="get_mode" select="''"/>
+  <!--  -->
+  <!-- what project to show -->
+  <xsl:param name="get_id" select="''"/>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <xsl:variable name="current_project_id">
+    <xsl:choose>
+      <xsl:when test="not(//projects/project[@id=$get_id])">
+        <xsl:value-of select="''"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$get_id"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <!--  -->
+  <!--  -->
+  <xsl:variable name="current_project" select="//projects/project[@id=$current_project_id and @id!='']"/>
+  <xsl:variable name="current_project_type" select="$current_project/display/@type"/>
+  <!--  -->
+  <xsl:variable name="projects" select="//projects/project[@id!='']"/>
+  <xsl:variable name="categories" select="//categories/category[@id!='']"/>
+  <!--  -->
+  <xsl:variable name="count_projects" select="count($projects)"/>
+  <xsl:variable name="count_categories" select="count($categories)"/>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <xsl:variable name="url_portfolio">
+    <xsl:value-of select="'/portfolio/'"/>
+  </xsl:variable>
+  <!--  -->
+  <xsl:variable name="url_project">
+    <xsl:value-of select="concat($url_portfolio,$current_project/@id,'/')"/>
+  </xsl:variable>
+  <!--  -->
+  <xsl:variable name="url_header">
+    <xsl:value-of select="concat($url_project,'header/')"/>
+  </xsl:variable>
+  <!--  -->
+  <xsl:variable name="url_content">
+    <xsl:value-of select="concat($url_project,'content/')"/>
+    <xsl:if test="$current_project/display/@qsparams!=''">
+      <xsl:value-of select="concat('?',$current_project/display/@qsparams)"/>
+    </xsl:if>
+  </xsl:variable>
+  <!--  -->
+  <!--  -->
+  <xsl:variable name="google_analytics">
+    <![CDATA[
+      <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+      var pageTracker = _gat._getTracker("UA-4146012-1");
+      pageTracker._initData();
+      pageTracker._trackPageview();
+      </script>
+    ]]>
+  </xsl:variable>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- draw html page, for MT include -->
+  <xsl:template match="data">
+    <xsl:choose>
+      <xsl:when test="$section='project'">
+        <xsl:call-template name="html_shell"/>
+      </xsl:when>
+      <xsl:when test="$section='subnav'">
+        <xsl:call-template name="list_categories_nav"/>
+      </xsl:when>
+      <xsl:when test="$section='footer'">
+        <p>
+          This page lists 
+          <xsl:value-of select="$count_projects"/>
+          projects, grouped into
+          <xsl:value-of select="$count_categories"/>
+          categories.
+        </p>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="portfolio">
+          <xsl:call-template name="list_categories_and_projects"/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- main html shell -->
+  <xsl:template name="html_shell">
+    <xsl:choose>
+      <xsl:when test="$current_project_id='' and $get_mode=''">
+        <!-- output just this so that the PHP script can do an HTTP redirect -->
+        <xsl:value-of select="concat('XX_REDIRECT_',$url_portfolio,'_REDIRECT_XX')" disable-output-escaping="yes"/>
+      </xsl:when>
+      <xsl:when test="$current_project_type='url' and $get_mode='content'">
+        <!-- output just this so that the PHP script can do an HTTP redirect -->
+        <xsl:value-of select="concat('XX_REDIRECT_',$current_project/@url,'_REDIRECT_XX')" disable-output-escaping="yes"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <html id="portfolio" lang="en">
+          <head>
+            <xsl:value-of select="concat('XX_TITLE_',' &amp;raquo; Portfolio &amp;raquo; ',$current_project/@client,' &amp;raquo; ',$current_project/title/text(),'_TITLE_XX')" disable-output-escaping="yes"/>
+            <xsl:value-of select="'XX_HEAD_XX'" disable-output-escaping="yes"/>
+            <xsl:if test="$current_project_type='swf' and $get_mode='content'">
+              <xsl:call-template name="head_swf"/>
+            </xsl:if>
+          </head>
+          <xsl:choose>
+            <xsl:when test="$get_mode=''">
+              <xsl:call-template name="html_frameset"/>
+            </xsl:when>
+            <xsl:when test="$get_mode='header'">
+              <xsl:variable name="body_class" select="'portfolio'"/>
+              <xsl:value-of select="concat('&lt;!--[if lt IE 7 ]&gt;&lt;body class=&quot;ie6 ',$body_class,'&quot;&gt;&lt;![endif]--&gt;&lt;!--[if IE 7 ]&gt;&lt;body class=&quot;ie7 ',$body_class,'&quot;&gt;&lt;![endif]--&gt;&lt;!--[if IE 8 ]&gt;&lt;body class=&quot;ie8 ',$body_class,'&quot;&gt;&lt;![endif]--&gt;&lt;!--[if !IE]&gt;&lt;!--&gt;')" disable-output-escaping="yes"/>
+              <body> 
+                <xsl:attribute name="class">
+                  <xsl:value-of select="$body_class"/>
+                </xsl:attribute>
+                <xsl:value-of select="'&lt;!--&lt;![endif]--&gt;'" disable-output-escaping="yes"/>
+                <xsl:call-template name="html_header"/>
+                <xsl:value-of select="$google_analytics" disable-output-escaping="yes"/>
+              </body>
+            </xsl:when>
+            <xsl:when test="$get_mode='content'">
+              <xsl:call-template name="html_content"/>
+            </xsl:when>
+          </xsl:choose>
+        </html>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- html frameset -->
+  <!--  -->
+  <xsl:template name="html_frameset">
+    <frameset rows="27,*">
+      <frame noresize="noresize" scrolling="no" marginheight="0">
+        <xsl:attribute name="src">
+          <xsl:value-of select="$url_header"/>
+        </xsl:attribute>
+      </frame>
+      <frame scrolling="auto" marginheight="0">
+        <xsl:attribute name="src">
+          <xsl:value-of select="$url_content"/>
+        </xsl:attribute>
+      </frame>
+      <noframes>
+        <body>
+          <xsl:call-template name="html_header">
+            <xsl:with-param name="hide_remove_link" select="'1'"/>
+          </xsl:call-template>
+          <h3>
+            <xsl:value-of select="$current_project/@client"/>
+          </h3>
+          <xsl:for-each select="$current_project">
+            <xsl:call-template name="draw_project">
+              <xsl:with-param name="content_link" select="'1'"/>
+            </xsl:call-template>
+          </xsl:for-each>
+          <xsl:value-of select="$google_analytics" disable-output-escaping="yes"/>
+        </body>
+      </noframes>
+    </frameset>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- html content -->
+  <xsl:template name="html_content">
+    <body>
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('portfolio portfolio-',$current_project_type)"/>
+      </xsl:attribute>
+      <style type="text/css">
+        html#portfolio, html#portfolio body {
+          <xsl:if test="$current_project/display/@bgcolor!=''">
+            <xsl:value-of select="concat('background:',$current_project/display/@bgcolor,';')"/>
+          </xsl:if>
+          <xsl:if test="$current_project/display/@width!=''">
+            <xsl:value-of select="concat('min-width:',$current_project/display/@width,';')"/>
+          </xsl:if>
+          <xsl:if test="$current_project/display/@height!=''">
+            <xsl:value-of select="concat('min-height:',$current_project/display/@height,';')"/>
+          </xsl:if>
+        }
+      </style>
+      <!--  -->
+      <xsl:choose>
+        <xsl:when test="$current_project_type='swf'">
+          <xsl:call-template name="body_swf"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="error">
+            <xsl:with-param name="message" select="concat('Project type ',$current_project_type,' not found!')"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </body>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- html header -->
+  <xsl:template name="html_header">
+    <xsl:param name="hide_remove_link" select="''"/>
+    <div class="header">
+      <xsl:if test="$hide_remove_link=''">
+        <div class="right">
+          <a target="_top">
+            <xsl:attribute name="href">
+              <xsl:value-of select="$url_content"/>
+            </xsl:attribute>
+            <xsl:text>remove this frame [x]</xsl:text>
+          </a>
+        </div>
+      </xsl:if>
+      <h1>
+        <a href="/" target="_top" class="title"><b>Ben</b> Alman</a>
+        »
+        <a target="_top">
+          <xsl:attribute name="href">
+            <xsl:value-of select="$url_portfolio"/>
+          </xsl:attribute>
+          <xsl:text>Portfolio</xsl:text>
+        </a>
+        »
+        <xsl:for-each select="$current_project">
+          <xsl:value-of select="concat(@client,' » ')"/>
+          <xsl:copy-of select="title/node()"/>
+        </xsl:for-each>
+      </h1>
+    </div>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- draw html body for swf project -->
+  <xsl:template name="head_swf">
+    <xsl:for-each select="$current_project">
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js"></script>
+      <script type="text/javascript" src="/code/php/multi_file.php?m=benalman_js"></script>
+      <script type="text/javascript">
+        <xsl:value-of select="concat('portfolio_draw_flash(&quot;',@url,'&quot;,&quot;',display/@width,'&quot;,&quot;',display/@height,'&quot;,&quot;',display/@bgcolor,'&quot;);')"/>
+      </script>
+    </xsl:for-each>
+  </xsl:template>
+  <xsl:template name="body_swf">
+    <xsl:for-each select="$current_project">
+      <xsl:variable name="flash_movie">
+        <div id="flash_movie" class="center3">
+          <xsl:attribute name="style">
+            <xsl:if test="display/@width!=''">
+              <xsl:value-of select="concat('width:',display/@width,';')"/>
+            </xsl:if>
+            <xsl:if test="display/@height!=''">
+              <xsl:value-of select="concat('height:',display/@height,';')"/>
+            </xsl:if>
+          </xsl:attribute>
+          <div class="no_flash">
+            <h2>
+              <xsl:value-of select="concat(@client,': ')"/>
+              <xsl:copy-of select="title/node()"/>
+            </h2>
+            This page requires JavaScript and the latest <a href="http://adobe.com/go/getflashplayer/" target="_blank">Adobe Flash Player</a>.
+          </div>
+        </div>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="display/@width='100%' or display/@height='100%'">
+          <xsl:copy-of select="$flash_movie"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <div class="content center1">
+            <div class="center2">
+              <xsl:copy-of select="$flash_movie"/>
+            </div>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- draw the project categories subnav -->
+  <xsl:template name="list_categories_nav">
+    <ul class="nav subnav">
+      <xsl:for-each
+        select="$categories">
+        <li>
+          <xsl:if test="position()=last()">
+            <xsl:attribute name="class">last</xsl:attribute>
+          </xsl:if>
+          <a>
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat('#',@id)"/>
+            </xsl:attribute>
+            <xsl:value-of select="@abbrev"/>
+          </a>
+          <xsl:if test="position()!=last()">
+            <xsl:text> </xsl:text>
+            <span class="divider">|</span>
+          </xsl:if>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
+  <!--  -->
+  <!-- list all projects by category -->
+  <xsl:template name="list_categories_and_projects">
+    <xsl:for-each
+      select="$categories">
+      <a>
+        <xsl:attribute name="name">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </a>
+      <h2>
+        <xsl:copy-of select="node()"/>
+      </h2>
+      <xsl:call-template name="list_projects">
+        <xsl:with-param name="category" select="@id"/>
+      </xsl:call-template>
+      <xsl:if test="position()!=last()">
+        <!-- <div class="hr"><hr/></div> -->
+        <div class="spacer"></div>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+  <!--  -->
+  <!-- list projects, sorted by client (requires exslt) -->
+  <xsl:template name="list_projects">
+    <xsl:param name="category" select="''"/>
+    <xsl:variable name="projects_sorted_rtf">
+      <xsl:for-each select="$projects[@category=$category]">
+        <xsl:sort select="@client"/>
+        <xsl:copy-of select="."/>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:for-each select="exslt:node-set($projects_sorted_rtf)/project">
+      <xsl:call-template name="draw_project"/>
+    </xsl:for-each>
+  </xsl:template>
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- draw project with featured status, links, and description -->
+  <xsl:template name="draw_project">
+    <xsl:param name="content_link" select="''"/>
+    <xsl:variable name="has_live" select="live/@enabled='1' and live/@url!=''"/>
+    <xsl:variable name="project_year">
+      <xsl:if test="description/@year!=''">
+        <xsl:text> </xsl:text>
+        <span class="year">
+          <xsl:value-of select="description/@year"/>
+        </span>
+      </xsl:if>
+    </xsl:variable>
+    <!--  -->
+    <xsl:if test="not(@client=preceding-sibling::project[1]/@client)">
+      <h3>
+        <xsl:value-of select="@client"/>
+      </h3>
+    </xsl:if>
+    <div>
+      <xsl:attribute name="id">
+        <xsl:value-of select="@id"/>
+      </xsl:attribute>
+      <xsl:variable name="p_class">
+        <xsl:value-of select="'project '"/>
+        <xsl:if test="@featured='1'">
+          <xsl:value-of select="'featured '"/>
+        </xsl:if>
+        <xsl:if test="not(@client=preceding-sibling::project[1]/@client)">
+          <xsl:value-of select="'project-first '"/>
+        </xsl:if>
+      </xsl:variable>
+      <xsl:attribute name="class">
+        <xsl:value-of select="normalize-space($p_class)"/>
+      </xsl:attribute>
+      <!--  -->
+      <dl>
+        <dt>
+          <xsl:copy-of select="title/node()"/>
+        </dt>
+        <dd>
+          <xsl:if test="normalize-space(description)!=''">
+            <div class="description">
+              <xsl:copy-of select="description/node()"/>
+              <div class="date">
+                <xsl:copy-of select="$project_year"/>
+              </div>
+              <xsl:if test="description/@tech!=''">
+                <p class="meta">
+                  <xsl:value-of select="concat('Technologies used: ',description/@tech)"/>
+                </p>
+              </xsl:if>
+            </div>
+          </xsl:if>
+          <ul class="nav">
+            <li>
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat($url_portfolio,@id,'/')"/>
+                  <xsl:if test="$content_link='1'">
+                    <xsl:value-of select="'content/'"/>
+                  </xsl:if>
+                </xsl:attribute>
+                <xsl:choose>
+                  <xsl:when test="$has_live">
+                    <xsl:attribute name="class">
+                      <xsl:value-of select="'bgfx button-img button-mirror'"/>
+                    </xsl:attribute>
+                    <xsl:text>Mirror</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:attribute name="class">
+                      <xsl:value-of select="'bgfx button-img button-view'"/>
+                    </xsl:attribute>
+                    <xsl:text>View</xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <span class="bgfx1">&#160;</span>
+              </a>
+            </li>
+            <xsl:if test="$has_live">
+              <li>
+                <a class="bgfx button-img button-view">
+                  <xsl:attribute name="href">
+                    <xsl:value-of select="live/@url"/>
+                  </xsl:attribute>
+                  <xsl:text>View</xsl:text>
+                  <span class="bgfx1">&#160;</span>
+                </a>
+              </li>
+            </xsl:if>
+          </ul>
+        </dd>
+      </dl>
+      <div class="clear"/>
+    </div>
+  </xsl:template>
+</xsl:stylesheet>
