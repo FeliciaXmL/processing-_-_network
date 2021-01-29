@@ -1,37 +1,29 @@
-## Welcome to GitHub Pages
+I am new to the development world of online programming and engineering.
 
-You can use the [editor on GitHub](https://github.com/FeliciaXmL/processing-_-_network/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+For sometime now I have been intrigued in designing my own product. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+I would like to become an engineer for something in the area of networking or possibly telecommunications. 
 
-### Markdown
+I have a strong passion for networking and telecommunications.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Only problem is, even if I can create a network on my own, and provide service and data to someones mobile device, 
+I still can not express to the millions of people online to know that so I can grow doing what I like and best part,
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+ what i am.  
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+My passion has been alive for awhile and the only problem is I lack in the area of coding.
 
-[Link](url) and ![Image](src)
-```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+but to be an engineer (no I am not one and can not really speak on the behalf of engineers due to me not technically having the title at all but I am working my way there and from my perspective this is what I would say in my own opinion and not judging or saying that this opinion is correct or not it is only my thoughts so don't take it personally, it is not so much about coding, it's what about creating and putting what components, functionalities you would need to be able to even make that code and you would have to know a little bit more than coding, 
+Or have an idea first, as to what you want to create.)
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/FeliciaXmL/processing-_-_network/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Now I do understand that those hardware components and that software does have to have code. So this is why I want to keep learning.
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+ however I have been currently actually creating my own website and this is the link to check it out this is what I've got so far and like I said my passion is still there has been there for some time and I just would like to transcribe what I can do and what I can't do all in one to be able to create something for myself like my own business product but I am continuing to learn and like I had mentioned here's my link to check out what I can do and what I have done this past week
+
+
